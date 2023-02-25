@@ -1,4 +1,6 @@
+use anyhow::{Context, Result};
 use parser::SyntaxKind::{COMMA, L_PAREN, R_PAREN, WHITESPACE};
+use std::path::Path;
 use std::process::Command;
 use syntax::algo::diff;
 use syntax::ast::make::token;
@@ -14,10 +16,9 @@ struct SillyBugger;
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 struct SqueezeIt;
 
-fn main() {
-    let src = std::fs::read_to_string("src/main.rs").unwrap();
-
-    let parse = syntax::SourceFile::parse(&src);
+// TODO: clean up this abomination
+fn modify_source(source: &mut String) -> Result<()> {
+    let parse = syntax::SourceFile::parse(source);
     let file: syntax::SourceFile = parse.tree();
 
     let mut edits = Vec::new();
@@ -90,7 +91,7 @@ fn main() {
 
         for (i, component) in sorted_components.into_iter().enumerate() {
             // Remove whitespace from the start and end.
-            let tt: Vec<_> = component.tokens.into_iter().cloned().collect();
+            let tt: Vec<_> = component.tokens.to_vec();
 
             let l = tt.iter().position(|x| x.kind() != WHITESPACE).unwrap();
             let r = tt
@@ -98,7 +99,7 @@ fn main() {
                 .rposition(|x| x.kind() != COMMA && x.kind() != WHITESPACE)
                 .unwrap();
 
-            let tt: Vec<_> = tt[l..=r].into_iter().cloned().collect();
+            let tt: Vec<_> = tt[l..=r].to_vec();
             let vv: Vec<_> = tt
                 .into_iter()
                 .map(|c| c.syntax_element())
@@ -127,19 +128,43 @@ fn main() {
         u.union(v).unwrap();
         u
     });
-    let mut src = file.to_string();
-    text_edit.apply(&mut src);
+    text_edit.apply(source);
+    Ok(())
+}
 
-    // Write the output to disk & format it.
-    std::fs::write("src/main.rs.swp", src).expect("failed to write output");
+/// Write our source code output to `path`.
+fn write_output(source: String, path: &Path) -> Result<()> {
+    let swap_path = path.with_extension("rs.swp");
+    std::fs::write(&swap_path, source)
+        .with_context(|| format!("failed to write {}", swap_path.display()))?;
 
     // TODO: confirm rustfmt exists
     Command::new("rustfmt")
-        .args(["src/main.rs.swp"])
+        .args([&swap_path])
         .output()
-        .expect("failed to run rustfmt");
+        .with_context(|| format!("failed to format {}", swap_path.display()))?;
 
-    // Now replace .swp with the real thing
-    std::fs::copy("src/main.rs.swp", "src/main.rs").expect("failed to copy output");
-    std::fs::remove_file("src/main.rs.swp").expect("failed to delete swpfile");
+    // Now replace the original file w/ our swapfile
+    std::fs::copy(&swap_path, path).with_context(|| {
+        format!(
+            "failed to copy {} to {}",
+            swap_path.display(),
+            path.display()
+        )
+    })?;
+    std::fs::remove_file(&swap_path)
+        .with_context(|| format!("failed to delete {}", swap_path.display()))?;
+
+    Ok(())
+}
+
+fn reorder_derives_in_file<P: AsRef<Path>>(path: P) -> Result<()> {
+    let path = path.as_ref();
+    let mut source = std::fs::read_to_string(path).with_context(|| "failed to read source file")?;
+    modify_source(&mut source)?;
+    write_output(source, path)
+}
+
+fn main() -> Result<()> {
+    reorder_derives_in_file("src/main.rs")
 }
