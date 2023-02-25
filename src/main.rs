@@ -16,6 +16,38 @@ struct SillyBugger;
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 struct SqueezeIt;
 
+#[derive(Clone, Debug)]
+struct Component<'a> {
+    ident: &'a str,
+    tokens: &'a [SyntaxToken],
+}
+
+impl<'a> Component<'a> {
+    pub fn new(tokens: &'a [SyntaxToken]) -> Self {
+        let ident = tokens
+            .iter()
+            .filter_map(|t| {
+                if t.kind() != WHITESPACE && t.kind() != COMMA {
+                    Some(t.text())
+                } else {
+                    None
+                }
+            })
+            .last()
+            .unwrap();
+
+        Self { tokens, ident }
+    }
+}
+
+fn reorder_components(components: &mut [Component<'_>]) {
+    // We may want some sort of grouping behaviour, e.g.;
+    // Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord
+    //                     <----------->  <------------->
+    // For now, just sort alphabetically.
+    components.sort_by_key(|c| std::cmp::Reverse(c.ident));
+}
+
 // TODO: clean up this abomination
 fn modify_source(source: &mut String) -> Result<()> {
     let parse = syntax::SourceFile::parse(source);
@@ -53,37 +85,13 @@ fn modify_source(source: &mut String) -> Result<()> {
             continue;
         }
 
-        #[derive(Clone, Debug)]
-        struct Component<'a> {
-            ident: &'a str,
-            tokens: &'a [SyntaxToken],
-        }
-
-        impl<'a> Component<'a> {
-            pub fn new(tokens: &'a [SyntaxToken]) -> Self {
-                let ident = tokens
-                    .iter()
-                    .filter_map(|t| {
-                        if t.kind() != WHITESPACE && t.kind() != COMMA {
-                            Some(t.text())
-                        } else {
-                            None
-                        }
-                    })
-                    .last()
-                    .unwrap();
-
-                Self { tokens, ident }
-            }
-        }
-
         let components: Vec<_> = tokens[1..tokens.len() - 1]
             .split_inclusive(|token| token.kind() == COMMA)
             .map(Component::new)
             .collect();
 
         let mut sorted_components = components.clone();
-        sorted_components.sort_by_key(|c| std::cmp::Reverse(c.ident));
+        reorder_components(&mut sorted_components);
 
         ted::remove_all(
             tokens[0].clone().syntax_element()..=tokens[tokens.len() - 1].clone().syntax_element(),
