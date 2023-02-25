@@ -1,0 +1,9 @@
+[package]
+name = "derivefmt"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+parser = { git = "https://github.com/rust-lang/rust-analyzer" }
+syntax = { git = "https://github.com/rust-lang/rust-analyzer" }
+text-edit = { git = "https://github.com/rust-lang/rust-analyzer" }
