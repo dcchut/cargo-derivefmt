@@ -1,0 +1,8 @@
+---
+source: src/tests/mod.rs
+expression: source
+---
+
+#[derive( Clone, Copy, std :: fmt :: Debug, Eq, Hash, Ord, PartialEq, PartialOrd )]
+struct SillyBugger;
+

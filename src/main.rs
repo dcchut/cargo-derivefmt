@@ -1,23 +1,27 @@
 #[cfg(test)]
 mod tests;
 
+use std::{
+    collections::HashSet,
+    path::{Path, PathBuf},
+    process::Command,
+};
+
 use anyhow::{Context, Result};
+use clap::Parser;
 use parser::SyntaxKind::{COMMA, L_PAREN, R_PAREN, WHITESPACE};
-use std::path::Path;
-use std::process::Command;
-use syntax::algo::diff;
-use syntax::ast::make::token;
-use syntax::ast::AttrKind;
-use syntax::ted::{Element, Position};
-use syntax::NodeOrToken::Token;
-use syntax::{ast, ted, AstNode, SyntaxToken};
+use syntax::{
+    algo::diff,
+    ast,
+    ast::{make::token, AttrKind},
+    ted,
+    ted::{Element, Position},
+    AstNode,
+    NodeOrToken::Token,
+    SyntaxToken,
+};
 use text_edit::TextEdit;
 
-#[derive(Clone, Copy, std :: fmt :: Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-struct SillyBugger;
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-struct SqueezeIt;
 
 #[derive(Clone, Debug)]
 struct Component<'a> {
@@ -169,6 +173,14 @@ fn write_output(source: String, path: &Path) -> Result<()> {
     Ok(())
 }
 
+#[derive(Debug, Parser)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// The path to the files and folders that should be formatted.
+    #[clap(name = "file")]
+    file: Vec<PathBuf>,
+}
+
 fn reorder_derives_in_file<P: AsRef<Path>>(path: P) -> Result<()> {
     let path = path.as_ref();
     let mut source = std::fs::read_to_string(path).with_context(|| "failed to read source file")?;
@@ -176,6 +188,47 @@ fn reorder_derives_in_file<P: AsRef<Path>>(path: P) -> Result<()> {
     write_output(source, path)
 }
 
+#[derive(Debug, Eq, Hash, PartialEq)]
+struct Target {
+    /// A path to a source file.
+    path: PathBuf,
+}
+
+impl Target {
+    pub fn new<P: AsRef<Path>>(path: P) -> Result<Self> {
+        let path = path.as_ref().canonicalize()?;
+        Ok(Target { path })
+    }
+}
+
 fn main() -> Result<()> {
-    reorder_derives_in_file("src/main.rs")
+    let mut files = Args::parse().file;
+
+    // If no files are specified we assume the user wants to format CWD.
+    if files.is_empty() {
+        files.push(std::env::current_dir()?);
+    }
+
+    let mut resolved_files = HashSet::with_capacity(files.len());
+    for file in files {
+        if !file.exists() {
+            anyhow::bail!("file {} does not exist", file.display());
+        }
+
+        if file.is_dir() {
+            let glob = file.join("**").join("*.rs");
+            for entry in glob::glob(&glob.to_string_lossy())? {
+                let path = entry?;
+                resolved_files.insert(Target::new(path)?);
+            }
+        } else {
+            resolved_files.insert(Target::new(file)?);
+        }
+    }
+
+    for file in resolved_files {
+        reorder_derives_in_file(&file.path)?;
+    }
+
+    Ok(())
 }
