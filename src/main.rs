@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use anyhow::{Context, Result};
 use parser::SyntaxKind::{COMMA, L_PAREN, R_PAREN, WHITESPACE};
 use std::path::Path;
@@ -49,7 +52,7 @@ fn reorder_components(components: &mut [Component<'_>]) {
 }
 
 // TODO: clean up this abomination
-fn modify_source(source: &mut String) -> Result<()> {
+pub fn modify_source(source: &mut String) -> Result<()> {
     let parse = syntax::SourceFile::parse(source);
     let file: syntax::SourceFile = parse.tree();
 
