@@ -20,7 +20,8 @@ fn test_derive_ordering_qualified() {
         r#"
         #[derive(Clone, Copy, std :: fmt :: Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         struct SillyBugger;
-    "#);
+    "#,
+    );
     modify_source(&mut source).unwrap();
     insta::assert_snapshot!(source);
 }

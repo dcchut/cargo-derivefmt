@@ -10,6 +10,7 @@ use std::{
 use anyhow::{Context, Result};
 use clap::Parser;
 use parser::SyntaxKind::{COMMA, L_PAREN, R_PAREN, WHITESPACE};
+use rayon::prelude::*;
 use syntax::{
     algo::diff,
     ast,
@@ -21,7 +22,6 @@ use syntax::{
     SyntaxToken,
 };
 use text_edit::TextEdit;
-
 
 #[derive(Clone, Debug)]
 struct Component<'a> {
@@ -62,6 +62,7 @@ pub fn modify_source(source: &mut String) -> Result<()> {
 
     let mut edits = Vec::new();
 
+    let mut tokens = Vec::new();
     'item: for item in file.syntax().descendants().filter_map(ast::Attr::cast) {
         if item.kind() != AttrKind::Outer {
             continue;
@@ -74,8 +75,7 @@ pub fn modify_source(source: &mut String) -> Result<()> {
         let Some(_tree) = item.token_tree() else { continue; };
         let tree = _tree.clone_for_update();
 
-        let mut tokens = Vec::new();
-
+        tokens.clear();
         for node_or_token in tree.token_trees_and_tokens() {
             if let Some(token) = node_or_token.into_token() {
                 tokens.push(token);
@@ -147,32 +147,6 @@ pub fn modify_source(source: &mut String) -> Result<()> {
     Ok(())
 }
 
-/// Write our source code output to `path`.
-fn write_output(source: String, path: &Path) -> Result<()> {
-    let swap_path = path.with_extension("rs.swp");
-    std::fs::write(&swap_path, source)
-        .with_context(|| format!("failed to write {}", swap_path.display()))?;
-
-    // TODO: confirm rustfmt exists
-    Command::new("rustfmt")
-        .args([&swap_path])
-        .output()
-        .with_context(|| format!("failed to format {}", swap_path.display()))?;
-
-    // Now replace the original file w/ our swapfile
-    std::fs::copy(&swap_path, path).with_context(|| {
-        format!(
-            "failed to copy {} to {}",
-            swap_path.display(),
-            path.display()
-        )
-    })?;
-    std::fs::remove_file(&swap_path)
-        .with_context(|| format!("failed to delete {}", swap_path.display()))?;
-
-    Ok(())
-}
-
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -185,7 +159,8 @@ fn reorder_derives_in_file<P: AsRef<Path>>(path: P) -> Result<()> {
     let path = path.as_ref();
     let mut source = std::fs::read_to_string(path).with_context(|| "failed to read source file")?;
     modify_source(&mut source)?;
-    write_output(source, path)
+
+    std::fs::write(path, source).with_context(|| format!("failed to write {}", path.display()))
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
@@ -226,9 +201,16 @@ fn main() -> Result<()> {
         }
     }
 
-    for file in resolved_files {
-        reorder_derives_in_file(&file.path)?;
-    }
+    resolved_files
+        .par_iter()
+        .map(|file| reorder_derives_in_file(&file.path))
+        .collect::<Result<Vec<_>>>()?;
+
+    // Now run rustfmt on all the files we modified.
+    Command::new("rustfmt")
+        .args(resolved_files.iter().map(|file| &file.path))
+        .output()
+        .with_context(|| "failed to format output files")?;
 
     Ok(())
 }
