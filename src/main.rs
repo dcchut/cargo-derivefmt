@@ -14,54 +14,153 @@ use parser::{
     SyntaxKind::{COMMA, WHITESPACE},
 };
 use rayon::prelude::*;
-use syntax::{algo::diff, ast, ted, ted::Element, AstNode, SyntaxToken, SyntaxTreeBuilder};
+use syntax::{
+    algo::diff, ast, ted, ted::Element, AstNode, SyntaxNode, SyntaxToken, SyntaxTreeBuilder,
+};
 use text_edit::TextEdit;
 
-#[derive(Clone, Debug)]
-struct Component<'a> {
-    ident: Option<&'a str>,
-    tokens: &'a [SyntaxToken],
-}
-
-impl<'a> Component<'a> {
-    // <LEFT WHITESPACE>std:: fmt:: Debug<RIGHT WHITESPACE>
-    // ^ sep
-    pub fn new(tokens: &'a [SyntaxToken]) -> Self {
-        let ident = tokens
-            .iter()
-            .filter_map(|t| {
-                if t.kind() != WHITESPACE && t.kind() != COMMA {
-                    Some(t.text())
-                } else {
-                    None
-                }
-            })
-            .last();
-
-        Self { ident, tokens }
-    }
-}
-
-fn reorder_components(components: &mut Vec<Component<'_>>) {
-    let fixed_points = components
+fn ident(tokens: &[SyntaxToken]) -> Option<&str> {
+    tokens
         .iter()
-        .enumerate()
-        .filter(|(_, component)| component.ident.is_none())
-        .collect::<Vec<_>>();
+        .filter_map(|t| {
+            if t.kind() != WHITESPACE && t.kind() != COMMA {
+                Some(t.text())
+            } else {
+                None
+            }
+        })
+        .last()
+}
 
-    let mut parts = components.to_vec();
-    parts.retain(|x| x.ident.is_some());
-    parts.sort_by_key(|c| c.ident);
+fn sorted_groups(groups: Vec<Vec<SyntaxToken>>) -> Vec<Vec<SyntaxToken>> {
+    // Identify any fixed points - these are components that don't have an ident
+    // which we don't want to move in the derive.
+    let mut fixed_points = Vec::new();
+    let mut parts = Vec::with_capacity(groups.len());
 
-    for (i, comp) in fixed_points {
-        parts.insert(i, comp.clone());
+    for (idx, group) in groups.into_iter().enumerate() {
+        if ident(&group).is_some() {
+            parts.push(group);
+        } else {
+            fixed_points.push((idx, group));
+        }
+    }
+    parts.sort_by_key(|tokens| ident(&tokens).map(String::from));
+
+    // Re-insert the fixed points
+    for (idx, component) in fixed_points {
+        parts.insert(idx, component);
     }
 
-    *components = parts;
-    // We may want some sort of grouping behaviour, e.g.;
-    // Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord
-    //                     <----------->  <------------->
-    // For now, just sort alphabetically.
+    parts
+}
+
+struct ParsedDerive {
+    /// The separator after each group.
+    separators: Vec<Vec<SyntaxToken>>,
+
+    /// Optional separator before the first group.
+    leading_separator: Option<Vec<SyntaxToken>>,
+
+    /// An entry in the derive corresponding to a trait.
+    groups: Vec<Vec<SyntaxToken>>,
+}
+
+impl ParsedDerive {
+    pub fn parse(tokens: &[SyntaxToken]) -> ParsedDerive {
+        let mut separators: Vec<Vec<SyntaxToken>> = Vec::new();
+        let mut groups = Vec::new();
+        let mut leading_separator = None;
+
+        let mut acc = Vec::new();
+        for token in tokens.iter().map(Some).chain([None]) {
+            if let Some(token) = token {
+                if token.kind() != COMMA {
+                    acc.push(token.clone());
+                    continue;
+                }
+            }
+
+            if token.is_none() && acc.is_empty() {
+                // If the accumulator is empty then we don't have a trailing separator.
+                continue;
+            }
+
+            // acc here will typically look like " Clone", or perhaps "\n    Clone".
+            // Identify the "Clone" span.  Note that we also have more complex examples
+            // like " std:: fmt:: Debug " where the span should be "std:: fmt:: Debug".
+            let ident_start = acc
+                .iter()
+                .position(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
+                .unwrap_or(0);
+            let ident_end = acc
+                .iter()
+                .rposition(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
+                .unwrap_or(acc.len() - 1);
+
+            if ident_start > 0 {
+                if separators.is_empty() {
+                    // First token has a leading separator
+                    leading_separator = Some(acc[0..ident_start].to_vec());
+                } else {
+                    separators
+                        .last_mut()
+                        .unwrap()
+                        .extend_from_slice(&acc[0..ident_start]);
+                }
+            }
+
+            let mut separator = Vec::new();
+            separator.extend(token.cloned());
+            separator.extend_from_slice(&acc[(ident_end + 1)..]);
+            separators.push(separator);
+
+            groups.push(acc[ident_start..=ident_end].to_vec());
+            acc.clear();
+        }
+
+        dbg!(&acc);
+
+        ParsedDerive {
+            separators,
+            leading_separator,
+            groups,
+        }
+    }
+}
+
+/// Builds the new [`SyntaxNode`] for this derive.
+fn build_derive_node(
+    leading_separator: Option<Vec<SyntaxToken>>,
+    separators: Vec<Vec<SyntaxToken>>,
+    groups: Vec<Vec<SyntaxToken>>,
+) -> SyntaxNode {
+    let mut builder = SyntaxTreeBuilder::default();
+    builder.start_node(SyntaxKind::TOKEN_TREE);
+
+    fn extend<I: IntoIterator<Item = SyntaxToken>>(builder: &mut SyntaxTreeBuilder, iter: I) {
+        for token in iter {
+            builder.token(token.kind(), token.text());
+        }
+    }
+
+    if let Some(separators) = leading_separator {
+        extend(&mut builder, separators);
+    }
+
+    let mut separators = separators.into_iter();
+    for group in groups {
+        extend(&mut builder, group);
+        if let Some(comma) = separators.next() {
+            extend(&mut builder, comma);
+        }
+    }
+
+    for comma in separators {
+        extend(&mut builder, comma);
+    }
+    builder.finish_node();
+    builder.finish().syntax_node()
 }
 
 // TODO: clean up this abomination
@@ -93,129 +192,10 @@ pub fn modify_source(source: &mut String) -> Result<()> {
             }
         }
 
-        let mut builder = SyntaxTreeBuilder::default();
-        builder.start_node(SyntaxKind::TOKEN_TREE);
-
-        let mut separators: Vec<Vec<SyntaxToken>> = vec![];
-        let mut initial_separator = None;
-        let mut groups = vec![];
-        let mut acc = vec![];
-        for token in &tokens[1..(tokens.len() - 1)] {
-            if token.kind() == COMMA {
-                assert!(!acc.is_empty());
-
-                // Is there any left whitespace?
-                let left_whitespace_idx = acc
-                    .iter()
-                    .position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                    .unwrap_or(0);
-                let right_whitespace_idx = acc
-                    .iter()
-                    .rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                    .unwrap_or(acc.len() - 1);
-
-                // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
-
-                let l = &acc[0..left_whitespace_idx];
-                // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
-                let r = &acc[(right_whitespace_idx + 1)..];
-
-                if !l.is_empty() {
-                    if separators.is_empty() {
-                        initial_separator = Some(l.to_vec());
-                    } else {
-                        let q = separators.len() - 1;
-                        separators[q].extend_from_slice(l);
-                    }
-                }
-
-                let mut sep = vec![token.clone()];
-                sep.extend_from_slice(r);
-                separators.push(sep);
-                //         let left_whitespace = tokens.split(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
-                //             .next().unwrap();
-                //         let right_whitespace = tokens.rsplit(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
-                //             .next().unwrap();
-
-                groups.push(acc[left_whitespace_idx..=right_whitespace_idx].to_vec());
-                acc.clear();
-            } else {
-                acc.push(token.clone());
-            }
-        }
-        if !acc.is_empty() {
-            // Is there any left whitespace?
-            let left_whitespace_idx = acc
-                .iter()
-                .position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                .unwrap_or(0);
-            let right_whitespace_idx = acc
-                .iter()
-                .rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                .unwrap_or(acc.len() - 1);
-
-            // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
-
-            let l = &acc[0..left_whitespace_idx];
-            // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
-            let r = &acc[(right_whitespace_idx + 1)..];
-
-            if !l.is_empty() {
-                if separators.is_empty() {
-                    initial_separator = Some(l.to_vec());
-                } else {
-                    let q = separators.len() - 1;
-                    separators[q].extend_from_slice(l);
-                }
-            }
-
-            let mut sep = vec![];
-            sep.extend_from_slice(r);
-            if !sep.is_empty() {
-                separators.push(sep); // CHECK ME?
-            }
-            //         let left_whitespace = tokens.split(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
-            //             .next().unwrap();
-            //         let right_whitespace = tokens.rsplit(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
-            //             .next().unwrap();
-
-            groups.push(acc[left_whitespace_idx..=right_whitespace_idx].to_vec());
-        }
-
-        // Now build components
-        let components: Vec<_> = groups
-            .iter()
-            .map(|group| Component::new(group.as_slice()))
-            .collect();
-
-        let mut sorted_components = components.clone();
-        reorder_components(&mut sorted_components);
-
-        if let Some(separators) = initial_separator {
-            for token in separators {
-                builder.token(token.kind(), token.text());
-            }
-        }
-
-        let mut sep_iter = separators.into_iter();
-        for component in sorted_components {
-            for token in component.tokens {
-                builder.token(token.kind(), token.text());
-            }
-            if let Some(sep) = sep_iter.next() {
-                for token in sep {
-                    builder.token(token.kind(), token.text());
-                }
-            }
-        }
-        for sep in sep_iter {
-            for token in sep {
-                builder.token(token.kind(), token.text());
-            }
-        }
-        builder.finish_node();
-
-        let parse = builder.finish().syntax_node().clone_for_update();
+        let derive = ParsedDerive::parse(&tokens[1..(tokens.len() - 1)]);
+        let sorted_groups = sorted_groups(derive.groups);
+        let parse = build_derive_node(derive.leading_separator, derive.separators, sorted_groups)
+            .clone_for_update();
 
         ted::replace_all(
             tokens[1].clone().syntax_element()..=tokens[tokens.len() - 2].clone().syntax_element(),
