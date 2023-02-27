@@ -122,11 +122,10 @@ pub fn modify_source(source: &mut String) -> Result<()> {
                 // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
 
                 let l = &acc[0..left_whitespace_idx];
-                let m = &acc[left_whitespace_idx..=right_whitespace_idx];
+                // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
                 let r = &acc[(right_whitespace_idx+1)..];
 
                 if !l.is_empty() {
-                    // TODO: what if separators is empty?
                     if separators.is_empty() {
                         initial_separator = Some(l.to_vec());
                     } else {
@@ -145,14 +144,47 @@ pub fn modify_source(source: &mut String) -> Result<()> {
 
                 groups.push(acc[left_whitespace_idx..=right_whitespace_idx].to_vec());
                 acc.clear();
-                // std::mem::take(&mut acc));
             } else {
                 acc.push(token.clone());
             }
         }
         if !acc.is_empty() {
-            groups.push(acc);
+            // Is there any left whitespace?
+            let left_whitespace_idx = acc.iter().position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+                .unwrap_or(0);
+            let right_whitespace_idx = acc.iter().rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+                .unwrap_or(acc.len()-1);
+
+            // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
+
+            let l = &acc[0..left_whitespace_idx];
+            // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
+            let r = &acc[(right_whitespace_idx+1)..];
+
+            if !l.is_empty() {
+                if separators.is_empty() {
+                    initial_separator = Some(l.to_vec());
+                } else {
+                    let q = separators.len() - 1;
+                    separators[q].extend_from_slice(l);
+                }
+            }
+
+            let mut sep = vec![];
+            sep.extend_from_slice(r);
+            if !sep.is_empty() {
+                separators.push(sep); // CHECK ME?
+            }
+            //         let left_whitespace = tokens.split(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
+            //             .next().unwrap();
+            //         let right_whitespace = tokens.rsplit(|t| t.kind() != WHITESPACE && t.kind() != COMMA)
+            //             .next().unwrap();
+
+            groups.push(acc[left_whitespace_idx..=right_whitespace_idx].to_vec());
         }
+
+        dbg!((&initial_separator, &separators, &groups));
+
 
         // Now build components
         let components: Vec<_> = groups

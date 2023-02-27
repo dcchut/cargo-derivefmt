@@ -3,6 +3,6 @@ source: src/tests/mod.rs
 expression: source
 ---
 
-#[derive(Clone, Copy, Debug, Eq,  Hash, Ord, PartialEq,PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 struct Wrapped<T>(T);
 
