@@ -11,19 +11,10 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use parser::{
     SyntaxKind,
-    SyntaxKind::{COMMA, IDENT, L_PAREN, R_PAREN, WHITESPACE},
+    SyntaxKind::{COMMA, WHITESPACE},
 };
 use rayon::prelude::*;
-use syntax::{
-    algo::diff,
-    ast,
-    ast::{make::token, AttrKind},
-    ted,
-    ted::{Element, Position},
-    AstNode,
-    NodeOrToken::Token,
-    SyntaxNode, SyntaxToken, SyntaxTreeBuilder,
-};
+use syntax::{algo::diff, ast, ted, ted::Element, AstNode, SyntaxToken, SyntaxTreeBuilder};
 use text_edit::TextEdit;
 
 #[derive(Clone, Debug)]
@@ -82,7 +73,7 @@ pub fn modify_source(source: &mut String) -> Result<()> {
 
     let mut tokens = Vec::new();
     'item: for item in file.syntax().descendants().filter_map(ast::Attr::cast) {
-        if item.kind() != AttrKind::Outer {
+        if item.kind() != ast::AttrKind::Outer {
             continue;
         }
 
@@ -114,16 +105,20 @@ pub fn modify_source(source: &mut String) -> Result<()> {
                 assert!(!acc.is_empty());
 
                 // Is there any left whitespace?
-                let left_whitespace_idx = acc.iter().position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+                let left_whitespace_idx = acc
+                    .iter()
+                    .position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
                     .unwrap_or(0);
-                let right_whitespace_idx = acc.iter().rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                    .unwrap_or(acc.len()-1);
+                let right_whitespace_idx = acc
+                    .iter()
+                    .rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+                    .unwrap_or(acc.len() - 1);
 
                 // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
 
                 let l = &acc[0..left_whitespace_idx];
                 // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
-                let r = &acc[(right_whitespace_idx+1)..];
+                let r = &acc[(right_whitespace_idx + 1)..];
 
                 if !l.is_empty() {
                     if separators.is_empty() {
@@ -150,16 +145,20 @@ pub fn modify_source(source: &mut String) -> Result<()> {
         }
         if !acc.is_empty() {
             // Is there any left whitespace?
-            let left_whitespace_idx = acc.iter().position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+            let left_whitespace_idx = acc
+                .iter()
+                .position(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
                 .unwrap_or(0);
-            let right_whitespace_idx = acc.iter().rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
-                .unwrap_or(acc.len()-1);
+            let right_whitespace_idx = acc
+                .iter()
+                .rposition(|x: &SyntaxToken| x.kind() != WHITESPACE && x.kind() != COMMA)
+                .unwrap_or(acc.len() - 1);
 
             // 0..0 left_whitespace_idx..=right_whitespace_idx right_whitespace_idx..acc.len();
 
             let l = &acc[0..left_whitespace_idx];
             // let m = &acc[left_whitespace_idx..=right_whitespace_idx];
-            let r = &acc[(right_whitespace_idx+1)..];
+            let r = &acc[(right_whitespace_idx + 1)..];
 
             if !l.is_empty() {
                 if separators.is_empty() {
@@ -182,9 +181,6 @@ pub fn modify_source(source: &mut String) -> Result<()> {
 
             groups.push(acc[left_whitespace_idx..=right_whitespace_idx].to_vec());
         }
-
-        dbg!((&initial_separator, &separators, &groups));
-
 
         // Now build components
         let components: Vec<_> = groups
@@ -212,8 +208,7 @@ pub fn modify_source(source: &mut String) -> Result<()> {
                 }
             }
         }
-        for sep in sep_iter
-        {
+        for sep in sep_iter {
             for token in sep {
                 builder.token(token.kind(), token.text());
             }
@@ -222,101 +217,10 @@ pub fn modify_source(source: &mut String) -> Result<()> {
 
         let parse = builder.finish().syntax_node().clone_for_update();
 
-        println!("BEFORE:\n{}", tree);
-
         ted::replace_all(
             tokens[1].clone().syntax_element()..=tokens[tokens.len() - 2].clone().syntax_element(),
             vec![parse.syntax_element()],
         );
-
-        println!("AFTER:\n{}", tree);
-        //
-        // dbg!(parse);
-        //
-        // // L_PAREN@9..10 "(",
-        // //     IDENT@10..15 "Clone",
-        // //     COMMA@15..16 ",",
-        // //     WHITESPACE@16..17 " ",
-        // //     IDENT@17..21 "Copy",
-        // //     COMMA@21..22 ",",
-        // //     WHITESPACE@22..23 " ",
-        // //     IDENT@23..26 "std",
-        // //     WHITESPACE@26..27 " ",
-        // //     COLON@27..28 ":",
-        // //     COLON@28..29 ":",
-        // //     WHITESPACE@29..30 " ",
-        // //     IDENT@30..33 "fmt",
-        // //     WHITESPACE@33..34 " ",
-        // //     COLON@34..35 ":",
-        // //     COLON@35..36 ":",
-        // //     WHITESPACE@36..37 " ",
-        // //     IDENT@37..42 "Debug",
-        // //     COMMA@42..43 ",",
-        // //     WHITESPACE@43..44 " ",
-        // //     IDENT@44..46 "Eq",
-        // //     COMMA@46..47 ",",
-        // //     WHITESPACE@47..48 " ",
-        // //     IDENT@48..52 "Hash",
-        // //     COMMA@52..53 ",",
-        // //     WHITESPACE@53..54 " ",
-        // //     IDENT@54..57 "Ord",
-        // //     COMMA@57..58 ",",
-        // //     WHITESPACE@58..59 " ",
-        // //     IDENT@59..68 "PartialEq",
-        // //     COMMA@68..69 ",",
-        // //     WHITESPACE@69..70 " ",
-        // //     IDENT@70..80 "PartialOrd",
-        // //     R_PAREN@80..81 ")",
-        // //  WHITESPACE@401..406 "\n    ",
-        //
-        // dbg!(&tokens);
-        //
-        // // We should have _at least_ ( and ).
-        // if tokens.len() < 2
-        //     || tokens[0].kind() != L_PAREN
-        //     || tokens.last().unwrap().kind() != R_PAREN
-        // {
-        //     continue;
-        // }
-        //
-        // let components: Vec<_> = tokens[1..tokens.len() - 1]
-        //     .split_inclusive(|token| token.kind() == COMMA)
-        //     .filter_map(Component::new)
-        //     .collect();
-        //
-        // let mut sorted_components = components.clone();
-        // reorder_components(&mut sorted_components);
-        //
-        // // for (before, after) in components.into_iter().zip(sorted_components) {
-        // //     let t: SyntaxToken = todo!();
-        // //
-        // //
-        // //     before.tokens
-        // // }
-        //
-        //
-        // ted::remove_all(
-        //     tokens[0].clone().syntax_element()..=tokens[tokens.len() - 1].clone().syntax_element(),
-        // );
-        //
-        // for (i, component) in sorted_components.into_iter().enumerate() {
-        //     // Remove whitespace from the start and end.
-        //     let tt: Vec<_> = component.tokens.to_vec();
-        //     let vv: Vec<_> = tt
-        //         .into_iter()
-        //         .map(|c| c.syntax_element())
-        //         .chain(if i > 0 {
-        //             Some(Token(token(COMMA)))
-        //         } else {
-        //             None
-        //         })
-        //         .collect();
-        //
-        //     ted::insert_all(Position::first_child_of(tree.syntax()), vv);
-        // }
-        //
-        // ted::insert(Position::first_child_of(tree.syntax()), token(L_PAREN));
-        // ted::insert(Position::last_child_of(tree.syntax()), token(R_PAREN));
 
         let mut builder = TextEdit::builder();
         let d = diff(_tree.syntax(), tree.syntax());
