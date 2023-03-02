@@ -169,7 +169,6 @@ pub fn modify_source(source: &mut String) -> Result<()> {
     let file: syntax::SourceFile = parse.tree();
 
     let mut edits = Vec::new();
-
     let mut tokens = Vec::new();
     'item: for item in file.syntax().descendants().filter_map(ast::Attr::cast) {
         if item.kind() != ast::AttrKind::Outer {
