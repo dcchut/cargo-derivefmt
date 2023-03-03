@@ -54,10 +54,21 @@ name = "cargo-derivefmt"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "cargo-derivefmt-core",
  "clap",
- "derivefmt-core",
  "glob",
  "rayon",
+]
+
+[[package]]
+name = "cargo-derivefmt-core"
+version = "0.1.0"
+dependencies = [
+ "insta",
+ "parser",
+ "syntax",
+ "text-edit",
+ "textwrap",
 ]
 
 [[package]]
@@ -192,17 +203,6 @@ dependencies = [
  "lock_api",
  "once_cell",
  "parking_lot_core",
-]
-
-[[package]]
-name = "derivefmt-core"
-version = "0.1.0"
-dependencies = [
- "insta",
- "parser",
- "syntax",
- "text-edit",
- "textwrap",
 ]
 
 [[package]]

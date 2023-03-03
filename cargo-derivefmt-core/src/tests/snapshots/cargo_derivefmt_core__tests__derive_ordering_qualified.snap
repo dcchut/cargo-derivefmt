@@ -1,5 +1,5 @@
 ---
-source: derivefmt-core/src/tests/mod.rs
+source: cargo-derivefmt-core/src/tests/mod.rs
 expression: source
 ---
 

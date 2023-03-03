@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-    "derivefmt-core",
+    "cargo-derivefmt-core",
     "cargo-derivefmt",
 ]
 

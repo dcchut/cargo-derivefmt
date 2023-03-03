@@ -59,7 +59,7 @@ cargo derivefmt /path/to/folder/
 Pass `-` as the path to format input from stdin:
 
 ```shell
-echo "#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]" | derivefmt -
+echo "#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]" | cargo derivefmt -
 ```
 
 ## Roadmap
