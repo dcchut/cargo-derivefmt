@@ -1,0 +1,8 @@
+---
+source: src/tests/mod.rs
+expression: source
+---
+
+#[derive(Clone, Debug, Default Hash)]
+struct S;
+

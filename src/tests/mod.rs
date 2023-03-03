@@ -1,34 +1,54 @@
-use textwrap::dedent;
+macro_rules! test {
+    ($contents: expr) => {
+        let mut source = textwrap::dedent($contents);
+        crate::modify_source(&mut source).unwrap();
+        insta::assert_snapshot!(source);
+    };
+}
 
-use crate::modify_source;
+#[test]
+fn test_derive_missing_comma() {
+    test!(
+        r#"
+        #[derive(Debug, Clone, Default Hash)]
+        struct S;
+    "#
+    );
+}
+
+#[test]
+fn test_derive_double_comma() {
+    test!(
+        r#"
+        #[derive(Debug, Clone, Default,, Apples, Hash)]
+        struct T;
+    "#
+    );
+}
 
 #[test]
 fn test_derive_ordering() {
-    let mut source = dedent(
+    test!(
         r#"
         #[derive(Eq, Ord, PartialOrd, Copy, Clone, Debug, PartialEq, Hash)]
         struct Wrapped<T>(T);
-    "#,
+    "#
     );
-    modify_source(&mut source).unwrap();
-    insta::assert_snapshot!(source);
 }
 
 #[test]
 fn test_derive_ordering_qualified() {
-    let mut source = dedent(
+    test!(
         r#"
         #[derive ( PartialEq, Copy, PartialOrd, std :: fmt :: Debug, Hash, Eq, Ord )]
         struct SillyBugger;
-    "#,
+    "#
     );
-    modify_source(&mut source).unwrap();
-    insta::assert_snapshot!(source);
 }
 
 #[test]
 fn test_multiline_derives() {
-    let mut source = dedent(
+    test!(
         r#"
         #[derive(
             core::cmp::PartialEq,
@@ -56,8 +76,24 @@ fn test_multiline_derives() {
         )]
         struct Std;
 
-        "#,
+        "#
     );
-    modify_source(&mut source).unwrap();
-    insta::assert_snapshot!(source);
+}
+
+#[test]
+fn test_derive_comments() {
+    test!(
+        r#"
+        #[derive(
+        /* ---------- Some really important comment that just had to go inside the derive --------- */
+        Debug,
+        Clone, // And what about this?
+        Eq, PartialEq,
+        )]
+        struct Foo {
+            a: i32,
+            b: T,
+        }
+        "#
+    );
 }
