@@ -40,7 +40,11 @@ jobs:
         with:
           repository: 'dtolnay/serde'
           path: 'serde'
-      - run: cargo run --release -- serde
+      - uses: actions/checkout@v3
+        with:
+          repository: 'rust-lang/rustfmt'
+          path: 'rustfmt'
+      - run: cargo run -- serde rustfmt
 
   clippy:
     name: Clippy
