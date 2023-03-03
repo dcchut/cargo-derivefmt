@@ -5,11 +5,4 @@ mod sort;
 #[cfg(test)]
 mod tests;
 
-use thiserror::Error;
-
-#[derive(Debug, Error)]
-pub enum Error {
-
-}
-
 pub use modify::modify_source;

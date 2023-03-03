@@ -50,6 +50,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
+name = "cargo-derivefmt"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "derivefmt-core",
+ "glob",
+ "rayon",
+]
+
+[[package]]
 name = "cc"
 version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -184,17 +195,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "derivefmt-cli"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "derivefmt-core",
- "glob",
- "rayon",
-]
-
-[[package]]
 name = "derivefmt-core"
 version = "0.1.0"
 dependencies = [
@@ -203,7 +203,6 @@ dependencies = [
  "syntax",
  "text-edit",
  "textwrap",
- "thiserror",
 ]
 
 [[package]]
@@ -762,26 +761,6 @@ dependencies = [
  "smawk",
  "unicode-linebreak",
  "unicode-width",
-]
-
-[[package]]
-name = "thiserror"
-version = "1.0.38"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a9cd18aa97d5c45c6603caea1da6628790b37f7a34b6ca89522331c5180fed0"
-dependencies = [
- "thiserror-impl",
-]
-
-[[package]]
-name = "thiserror-impl"
-version = "1.0.38"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fb327af4685e4d03fa8cbcf1716380da910eeb2bb8be417e7f9fd3fb164f36f"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]

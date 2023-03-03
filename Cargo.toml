@@ -2,7 +2,7 @@
 
 members = [
     "derivefmt-core",
-    "derivefmt-cli",
+    "cargo-derivefmt",
 ]
 
 [profile.dev.package.insta]

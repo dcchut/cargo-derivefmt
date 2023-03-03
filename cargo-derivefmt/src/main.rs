@@ -88,7 +88,7 @@ fn main() -> Result<()> {
         .par_iter()
         .map(|target| {
             let mut source = target.to_string()?;
-            derivefmt_core::modify_source(&mut source)?;
+            derivefmt_core::modify_source(&mut source);
             target.write(source)?;
             Ok(())
         })

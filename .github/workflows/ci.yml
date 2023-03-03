@@ -47,7 +47,7 @@ jobs:
           path: 'testcase'
       - name: Format and build
         run: |
-          cargo run -- testcase
+          cargo run --bin cargo-derivefmt -- testcase
           cd testcase
           cargo build
 

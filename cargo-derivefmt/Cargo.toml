@@ -1,0 +1,16 @@
+[package]
+name = "cargo-derivefmt"
+version = "0.1.0"
+authors = ["Robert Usher <266585+dcchut@users.noreply.github.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Derivefmt CLI"
+repository = "https://github.com/dcchut/derivefmt"
+readme = "../README.md"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.1", features = ["derive"] }
+glob = "0.3"
+rayon = "1.6"
+derivefmt-core = { path = "../derivefmt-core" }

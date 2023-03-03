@@ -1,7 +1,7 @@
 macro_rules! test {
     ($contents: expr) => {
         let mut source = textwrap::dedent($contents);
-        crate::modify_source(&mut source).unwrap();
+        crate::modify_source(&mut source);
         insta::assert_snapshot!(source);
     };
 }
