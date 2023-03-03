@@ -19,18 +19,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --verbose
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --verbose
 
   fmt:
     name: Fmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions-rs/toolchain@v1
         with:
-          components: fmt
-      - run: cargo fmt -- --check
+          profile: minimal
+          toolchain: nightly
+          components: rustfmt
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: -- --check
 
   integration:
     name: Integration Tests
@@ -40,7 +51,11 @@ jobs:
         target: ['dtolnay/serde', 'rust-lang/rustfmt']
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
       - uses: actions/checkout@v3
         with:
           repository: ${{ matrix.target }}
@@ -56,10 +71,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions-rs/toolchain@v1
         with:
+          profile: minimal
+          toolchain: nightly
           components: clippy
-      - run: cargo clippy -- -Dwarnings
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -Dwarnings
 
   outdated:
     name: Outdated
