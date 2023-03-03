@@ -1,10 +1,10 @@
-# derivefmt
+# cargo-derivefmt
 
 A tool for ordering derives in Rust code.
 
 ## Purpose
 
-`derivefmt` ensures that your derives are written in alphabetical order.
+`cargo-derivefmt` ensures that your derives are written in alphabetical order.
 
 ```rust
 // Before: pure chaos.
@@ -20,14 +20,22 @@ That's it!  That's all this does.
 
 ## Install guide
 
+```shell
+cargo install --locked --git https://github.com/dcchut/derivefmt --bin cargo-derivefmt
+```
+
 ## Quickstart guide
+
+```shell
+cargo derivefmt 
+```
 
 ### Formatting a single file.
 
 Pass a single path to format a single file:
 
 ```shell
-derivefmt path/to/src.rs
+cargo derivefmt path/to/src.rs
 ```
 
 ### Formatting multiple files.
@@ -35,7 +43,7 @@ derivefmt path/to/src.rs
 Pass multiple paths to format multiple files:
 
 ```shell
-derivefmt path/to/src.rs /path/to/another.rs
+cargo derivefmt path/to/src.rs /path/to/another.rs
 ```
 
 ### Formatting folders
@@ -43,7 +51,7 @@ derivefmt path/to/src.rs /path/to/another.rs
 Passing a folder formats all `.rs` files contained within it and its subfolders:
 
 ```shell
-derivefmt /path/to/folder/
+cargo derivefmt /path/to/folder/
 ```
 
 ### Formatting from STDIN
@@ -51,7 +59,7 @@ derivefmt /path/to/folder/
 Pass `-` as the path to format input from stdin:
 
 ```shell
-echo "#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]" | derivefmt -
+echo "#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]" | cargo derivefmt -
 ```
 
 ## Roadmap

@@ -1,10 +1,3 @@
-mod build;
-mod modify;
-mod parse;
-mod sort;
-#[cfg(test)]
-mod tests;
-
 use std::{
     collections::HashSet,
     io::Read,
@@ -14,8 +7,6 @@ use std::{
 use anyhow::{Context, Result};
 use clap::Parser;
 use rayon::prelude::*;
-
-use crate::modify::modify_source;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -97,7 +88,7 @@ fn main() -> Result<()> {
         .par_iter()
         .map(|target| {
             let mut source = target.to_string()?;
-            modify_source(&mut source)?;
+            cargo_derivefmt_core::modify_source(&mut source);
             target.write(source)?;
             Ok(())
         })

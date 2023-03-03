@@ -1,4 +1,3 @@
-use anyhow::Result;
 use syntax::{
     algo::diff,
     ast::{Attr, AttrKind},
@@ -10,8 +9,7 @@ use text_edit::TextEdit;
 
 use crate::{build::build_derive_node, parse::ParsedDerive, sort::sorted_groups};
 
-// TODO: clean up this abomination
-pub fn modify_source(source: &mut String) -> Result<()> {
+pub fn modify_source(source: &mut String) {
     let parse = syntax::SourceFile::parse(source);
     let file: syntax::SourceFile = parse.tree();
 
@@ -61,5 +59,4 @@ pub fn modify_source(source: &mut String) -> Result<()> {
         u
     });
     text_edit.apply(source);
-    Ok(())
 }

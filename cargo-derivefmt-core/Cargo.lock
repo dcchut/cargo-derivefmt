@@ -50,28 +50,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
-name = "cargo-derivefmt"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cargo-derivefmt-core",
- "clap",
- "glob",
- "rayon",
-]
-
-[[package]]
-name = "cargo-derivefmt-core"
-version = "0.1.0"
-dependencies = [
- "insta",
- "parser",
- "syntax",
- "text-edit",
- "textwrap",
-]
-
-[[package]]
 name = "cc"
 version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -203,6 +181,21 @@ dependencies = [
  "lock_api",
  "once_cell",
  "parking_lot_core",
+]
+
+[[package]]
+name = "derivefmt-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "glob",
+ "insta",
+ "parser",
+ "rayon",
+ "syntax",
+ "text-edit",
+ "textwrap",
 ]
 
 [[package]]

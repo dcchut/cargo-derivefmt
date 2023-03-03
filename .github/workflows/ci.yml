@@ -27,27 +27,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
       - run: cargo fmt -- --check
 
   integration:
     name: Integration Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: ['dtolnay/serde', 'rust-lang/rustfmt']
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: 'derivefmt'
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v3
         with:
-          repository: 'dtolnay/serde'
-          path: 'serde'
-      - run: cargo run --release -- serde
+          repository: ${{ matrix.target }}
+          path: 'testcase'
+      - name: Format and build
+        run: |
+          cd derivefmt
+          cargo run --bin cargo-derivefmt -- ../testcase
+          cd ../testcase
+          cargo build
 
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy
       - run: cargo clippy -- -Dwarnings
 
   outdated:
