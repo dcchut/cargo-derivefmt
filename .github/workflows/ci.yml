@@ -33,18 +33,21 @@ jobs:
   integration:
     name: Integration Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: ['dtolnay/serde', 'rust-lang/rustfmt']
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v3
         with:
-          repository: 'dtolnay/serde'
-          path: 'serde'
-      - uses: actions/checkout@v3
-        with:
-          repository: 'rust-lang/rustfmt'
-          path: 'rustfmt'
-      - run: cargo run -- serde rustfmt
+          repository: ${{ matrix.target }}
+          path: 'testcase'
+      - name: Format and build
+        run: |
+          cargo run -- testcase
+          cd testcase
+          cargo build
 
   clippy:
     name: Clippy
