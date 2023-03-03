@@ -40,6 +40,8 @@ jobs:
         target: ['dtolnay/serde', 'rust-lang/rustfmt']
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: 'derivefmt'
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v3
         with:
@@ -47,8 +49,9 @@ jobs:
           path: 'testcase'
       - name: Format and build
         run: |
-          cargo run --bin cargo-derivefmt -- testcase
-          cd testcase
+          cd derivefmt
+          cargo run --bin cargo-derivefmt -- ../testcase
+          cd ../testcase
           cargo build
 
   clippy:
