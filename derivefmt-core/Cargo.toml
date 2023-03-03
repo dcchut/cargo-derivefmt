@@ -1,0 +1,14 @@
+[package]
+name = "derivefmt-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "1.0"
+parser = { git = "https://github.com/rust-lang/rust-analyzer" }
+syntax = { git = "https://github.com/rust-lang/rust-analyzer" }
+text-edit = { git = "https://github.com/rust-lang/rust-analyzer" }
+
+[dev-dependencies]
+insta = "1.28"
+textwrap = "0.16"
