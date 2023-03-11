@@ -2,7 +2,7 @@
 
 A tool for ordering derives in Rust code.
 
-## Purpose
+## Motivation
 
 `cargo-derivefmt` ensures that your derives are written in alphabetical order.
 
@@ -18,13 +18,15 @@ struct S;
 
 That's it!  That's all this does.
 
-## Install guide
+## Installation
+
+This package is currently implemented using rust-analyzer internals, so cannot be published on crates.io.
 
 ```shell
 cargo install --locked --git https://github.com/dcchut/cargo-derivefmt --bin cargo-derivefmt
 ```
 
-## Quickstart guide
+## Usage
 
 ### Formatting the current crate
 
