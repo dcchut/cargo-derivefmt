@@ -1,98 +1,43 @@
-use std::{
-    collections::HashSet,
-    io::Read,
-    path::{Path, PathBuf},
-};
+use std::path::PathBuf;
 
-use anyhow::{Context, Result};
+use anyhow::Result;
+use cargo_files_core::{get_target_files, get_targets};
 use clap::Parser;
 use rayon::prelude::*;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
+// Cargo passes "files" to cargo-files, so add a hidden argument to capture that.
+#[command(
+    arg(clap::Arg::new("dummy")
+    .value_parser(["derivefmt"])
+    .required(false)
+    .hide(true))
+)]
 struct Args {
-    /// The path to the files and folders that should be formatted.
-    #[clap(name = "file")]
-    file: Vec<PathBuf>,
-}
-
-#[derive(Debug, Eq, Hash, PartialEq)]
-enum Target {
-    /// Input from stdin
-    Stdin,
-    /// A path to a source file.
-    Path(PathBuf),
-}
-
-impl Target {
-    pub fn new<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let path = path.as_ref();
-        Ok(if path.to_string_lossy() == "-" {
-            Self::Stdin
-        } else {
-            Self::Path(path.canonicalize()?)
-        })
-    }
-
-    pub fn to_string(&self) -> Result<String> {
-        match self {
-            Self::Stdin => {
-                let mut buf = String::new();
-                std::io::stdin()
-                    .read_to_string(&mut buf)
-                    .with_context(|| "failed to read from stdin")?;
-                Ok(buf)
-            }
-            Self::Path(path) => std::fs::read_to_string(path)
-                .with_context(|| format!("failed to read source file {}", path.display())),
-        }
-    }
-
-    pub fn write(&self, source: String) -> Result<()> {
-        match self {
-            Self::Stdin => {
-                println!("{source}");
-            }
-            Self::Path(path) => {
-                std::fs::write(path, source)
-                    .with_context(|| format!("failed to write {}", path.display()))?;
-            }
-        }
-
-        Ok(())
-    }
+    /// Path to Cargo.toml
+    #[arg(long)]
+    manifest_path: Option<PathBuf>,
 }
 
 fn main() -> Result<()> {
-    let mut files = Args::parse().file;
+    let args = Args::parse();
 
-    // If no files are specified we assume the user wants to format CWD.
-    if files.is_empty() {
-        files.push(std::env::current_dir()?);
+    let mut files = Vec::new();
+    let targets = get_targets(args.manifest_path.as_deref())?;
+    for target in targets {
+        files.extend(get_target_files(&target)?);
     }
 
-    let mut resolved_files = HashSet::with_capacity(files.len());
-    for file in files {
-        if file.is_dir() {
-            let glob = file.join("**").join("*.rs");
-            for entry in glob::glob(&glob.to_string_lossy())? {
-                let path = entry?;
-                resolved_files.insert(Target::new(path)?);
-            }
-        } else {
-            resolved_files.insert(Target::new(file)?);
-        }
-    }
-
-    resolved_files
-        .par_iter()
-        .map(|target| {
-            let mut source = target.to_string()?;
+    files
+        .into_par_iter()
+        .map(|path| {
+            let mut source = std::fs::read_to_string(&path)?;
             cargo_derivefmt_core::modify_source(&mut source);
-            target.write(source)?;
+            std::fs::write(&path, source)?;
             Ok(())
         })
-        .collect::<Result<Vec<_>>>()?;
+        .collect::<Result<_>>()?;
 
     Ok(())
 }
