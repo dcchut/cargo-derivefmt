@@ -30,38 +30,6 @@ cargo install --locked --git https://github.com/dcchut/cargo-derivefmt --bin car
 cargo derivefmt 
 ```
 
-### Formatting a single file.
-
-Pass a single path to format a single file:
-
-```shell
-cargo derivefmt path/to/src.rs
-```
-
-### Formatting multiple files.
-
-Pass multiple paths to format multiple files:
-
-```shell
-cargo derivefmt path/to/src.rs /path/to/another.rs
-```
-
-### Formatting folders
-
-Passing a folder formats all `.rs` files contained within it and its subfolders:
-
-```shell
-cargo derivefmt /path/to/folder/
-```
-
-### Formatting from STDIN
-
-Pass `-` as the path to format input from stdin:
-
-```shell
-echo "#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]" | cargo derivefmt -
-```
-
 ## Roadmap
 
 - Better identification of files to format (particularly in the context of a cargo project).
