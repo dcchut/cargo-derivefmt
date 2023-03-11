@@ -26,8 +26,37 @@ cargo install --locked --git https://github.com/dcchut/cargo-derivefmt --bin car
 
 ## Quickstart guide
 
+### Formatting the current crate
+
 ```shell
 cargo derivefmt 
+```
+
+### Formatting a different crate
+
+```shell
+cargo derivefmt --manifest-path /path/to/Cargo.toml
+```
+
+### Formatting a single file
+
+```shell
+cargo derivefmt --file path/to/src.rs
+```
+
+### Formatting multiple files
+
+
+```shell
+cargo derivefmt --file path/to/src.rs --file /path/to/another.rs
+```
+
+### Formatting folders
+
+Passing a folder formats all `.rs` files contained within it and its subfolders:
+
+```shell
+cargo derivefmt --file /path/to/folder/
 ```
 
 ## Roadmap
