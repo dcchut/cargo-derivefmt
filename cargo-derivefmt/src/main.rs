@@ -25,8 +25,6 @@ fn main() -> Result<()> {
 
     let mut files = Vec::new();
     let targets = get_targets(args.manifest_path.as_deref())?;
-    dbg!(targets);
-    panic!();
     for target in targets {
         files.extend(get_target_files(&target)?);
     }
