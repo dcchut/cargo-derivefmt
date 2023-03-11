@@ -21,7 +21,7 @@ That's it!  That's all this does.
 ## Install guide
 
 ```shell
-cargo install --locked --git https://github.com/dcchut/derivefmt --bin cargo-derivefmt
+cargo install --locked --git https://github.com/dcchut/cargo-derivefmt --bin cargo-derivefmt
 ```
 
 ## Quickstart guide

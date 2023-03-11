@@ -1,0 +1,8 @@
+---
+source: cargo-derivefmt-core/src/tests/mod.rs
+expression: source
+---
+
+#[derive ( Copy, std :: fmt :: Debug, Eq, Hash, Ord, PartialEq, PartialOrd )]
+struct SillyBugger;
+
