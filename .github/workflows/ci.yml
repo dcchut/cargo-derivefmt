@@ -50,7 +50,7 @@ jobs:
       - name: Format and build
         run: |
           cd derivefmt
-          cargo run --bin cargo-derivefmt -- ../testcase
+          cargo run --bin cargo-derivefmt -- --file ../testcase
           cd ../testcase
           cargo build
 
