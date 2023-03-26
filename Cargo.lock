@@ -231,7 +231,7 @@ dependencies = [
  "autocfg",
  "cfg-if",
  "crossbeam-utils",
- "memoffset 0.8.0",
+ "memoffset",
  "scopeguard",
 ]
 
@@ -412,7 +412,7 @@ checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
 [[package]]
 name = "la-arena"
 version = "0.3.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 
 [[package]]
 name = "lazy_static"
@@ -429,7 +429,7 @@ checksum = "201de327520df007757c1f0adce6e827fe8562fbc28bfd9c15571c66ca1f5f79"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 
 [[package]]
 name = "linked-hash-map"
@@ -467,15 +467,6 @@ name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
-
-[[package]]
-name = "memoffset"
-version = "0.6.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
-dependencies = [
- "autocfg",
-]
 
 [[package]]
 name = "memoffset"
@@ -533,7 +524,7 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -542,9 +533,9 @@ dependencies = [
 
 [[package]]
 name = "perf-event"
-version = "0.4.8"
+version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b4d6393d9238342159080d79b78cb59c67399a8e7ecfa5d410bd614169e4e823"
+checksum = "5396562cd2eaa828445d6d34258ae21ee1eb9d40fe626ca7f51c8dccb4af9d66"
 dependencies = [
  "libc",
  "perf-event-open-sys",
@@ -552,9 +543,9 @@ dependencies = [
 
 [[package]]
 name = "perf-event-open-sys"
-version = "4.0.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c44fb1c7651a45a3652c4afc6e754e40b3d6e6556f1487e2b230bfc4f33c2a8"
+checksum = "ce9bedf5da2c234fdf2391ede2b90fabf585355f33100689bc364a3ea558561a"
 dependencies = [
  "libc",
 ]
@@ -595,7 +586,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 dependencies = [
  "cfg-if",
  "countme",
@@ -665,13 +656,13 @@ checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
 
 [[package]]
 name = "rowan"
-version = "0.15.10"
+version = "0.15.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5811547e7ba31e903fe48c8ceab10d40d70a101f3d15523c847cce91aa71f332"
+checksum = "64449cfef9483a475ed56ae30e2da5ee96448789fb2aa240a04beb6a055078bf"
 dependencies = [
  "countme",
  "hashbrown",
- "memoffset 0.6.5",
+ "memoffset",
  "rustc-hash",
  "text-size",
 ]
@@ -787,7 +778,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 dependencies = [
  "always-assert",
  "libc",
@@ -815,7 +806,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 dependencies = [
  "cov-mark",
  "either",
@@ -844,7 +835,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#825833c26938d25a95f4c77f0e7011cffc34e15c"
+source = "git+https://github.com/rust-lang/rust-analyzer#27c076a36744f7f8be3b950891cbc0350dc29f6e"
 dependencies = [
  "itertools",
  "text-size",
