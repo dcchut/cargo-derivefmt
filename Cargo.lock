@@ -466,7 +466,7 @@ checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
 [[package]]
 name = "la-arena"
 version = "0.3.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 
 [[package]]
 name = "lazy_static"
@@ -483,7 +483,7 @@ checksum = "201de327520df007757c1f0adce6e827fe8562fbc28bfd9c15571c66ca1f5f79"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 
 [[package]]
 name = "linked-hash-map"
@@ -572,7 +572,7 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -610,7 +610,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 dependencies = [
  "cfg-if",
  "countme",
@@ -792,9 +792,9 @@ checksum = "f67ad224767faa3c7d8b6d91985b78e70a1324408abcb1cfcc2be4c06bc06043"
 
 [[package]]
 name = "smol_str"
-version = "0.1.24"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fad6c857cbab2627dcf01ec85a623ca4e7dcb5691cbaa3d7fb7653671f0d09c9"
+checksum = "74212e6bbe9a4352329b2f68ba3130c15a3f26fe88ff22dbdc6cdd58fa85e99c"
 dependencies = [
  "serde",
 ]
@@ -802,7 +802,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 dependencies = [
  "always-assert",
  "libc",
@@ -841,7 +841,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 dependencies = [
  "cov-mark",
  "either",
@@ -861,7 +861,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#51d5862caf428c9e160ccf28d684f0a33faccd7d"
+source = "git+https://github.com/rust-lang/rust-analyzer#bab80dae445fd576cb4cc22ba208e9fbc39dc18d"
 dependencies = [
  "itertools",
  "text-size",
