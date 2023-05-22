@@ -466,7 +466,7 @@ checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
 [[package]]
 name = "la-arena"
 version = "0.3.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 
 [[package]]
 name = "lazy_static"
@@ -483,7 +483,7 @@ checksum = "201de327520df007757c1f0adce6e827fe8562fbc28bfd9c15571c66ca1f5f79"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 
 [[package]]
 name = "linked-hash-map"
@@ -572,11 +572,11 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 dependencies = [
  "drop_bomb",
  "limit",
- "rustc-ap-rustc_lexer",
+ "ra-ap-rustc_lexer",
 ]
 
 [[package]]
@@ -610,7 +610,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 dependencies = [
  "cfg-if",
  "countme",
@@ -628,6 +628,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4424af4bf778aae2051a77b60283332f386554255d722233d09fbfc7e30da2fc"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "ra-ap-rustc_lexer"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e1c145702ed3f237918e512685185dc8a4d0edc3a5326c63d20361d8ba9b45b3"
+dependencies = [
+ "unic-emoji-char",
+ "unicode-xid",
 ]
 
 [[package]]
@@ -689,15 +699,6 @@ dependencies = [
  "memoffset",
  "rustc-hash",
  "text-size",
-]
-
-[[package]]
-name = "rustc-ap-rustc_lexer"
-version = "727.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f40f26e7abdcd3b982f36c09a634cc6187988fbf6ec466c91f8d30a12ac0237"
-dependencies = [
- "unicode-xid",
 ]
 
 [[package]]
@@ -802,7 +803,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 dependencies = [
  "always-assert",
  "libc",
@@ -841,7 +842,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 dependencies = [
  "cov-mark",
  "either",
@@ -850,8 +851,8 @@ dependencies = [
  "once_cell",
  "parser",
  "profile",
+ "ra-ap-rustc_lexer",
  "rowan",
- "rustc-ap-rustc_lexer",
  "rustc-hash",
  "smol_str",
  "stdx",
@@ -862,7 +863,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#e5c722820ac6f348c6c674ef3391d7156f1cd1c9"
+source = "git+https://github.com/rust-lang/rust-analyzer#7ac161ce77dfa31dc39337c2543a1d777e70c16e"
 dependencies = [
  "itertools",
  "text-size",
@@ -910,6 +911,47 @@ name = "triomphe"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1ee9bd9239c339d714d657fac840c6d2a4f9c45f4f9ec7b0975113458be78db"
+
+[[package]]
+name = "unic-char-property"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8c57a407d9b6fa02b4795eb81c5b6652060a15a7903ea981f3d723e6c0be221"
+dependencies = [
+ "unic-char-range",
+]
+
+[[package]]
+name = "unic-char-range"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0398022d5f700414f6b899e10b8348231abf9173fa93144cbc1a43b9793c1fbc"
+
+[[package]]
+name = "unic-common"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80d7ff825a6a654ee85a63e80f92f054f904f21e7d12da4e22f9834a4aaa35bc"
+
+[[package]]
+name = "unic-emoji-char"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b07221e68897210270a38bde4babb655869637af0f69407f96053a34f76494d"
+dependencies = [
+ "unic-char-property",
+ "unic-char-range",
+ "unic-ucd-version",
+]
+
+[[package]]
+name = "unic-ucd-version"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96bd2f2237fe450fcd0a1d2f5f4e91711124f7857ba2e964247776ebeeb7b0c4"
+dependencies = [
+ "unic-common",
+]
 
 [[package]]
 name = "unicode-ident"
