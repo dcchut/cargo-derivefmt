@@ -25,7 +25,9 @@ pub fn modify_source(source: &mut String) {
             continue;
         }
 
-        let Some(_tree) = item.token_tree() else { continue; };
+        let Some(_tree) = item.token_tree() else {
+            continue;
+        };
         let tree = _tree.clone_for_update();
 
         tokens.clear();
