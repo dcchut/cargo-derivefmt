@@ -487,7 +487,7 @@ checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 
 [[package]]
 name = "linked-hash-map"
@@ -582,7 +582,7 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -620,7 +620,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 dependencies = [
  "cfg-if",
  "countme",
@@ -824,7 +824,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
@@ -865,7 +865,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 dependencies = [
  "cov-mark",
  "either",
@@ -886,7 +886,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#429a3816adb99f33ef557767c874d2cd3a1ffa01"
+source = "git+https://github.com/rust-lang/rust-analyzer#baee6b338b0ea076cd7a9f18d47f175dd2ba0e5d"
 dependencies = [
  "itertools",
  "text-size",
