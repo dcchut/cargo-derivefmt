@@ -86,6 +86,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
 
 [[package]]
+name = "arrayvec"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96d30a06541fbafbc7f82ed10c06164cfbd2c401138f6addd8404629c4b16711"
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -371,6 +377,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 
 [[package]]
+name = "hkalbasi-rustc-ap-rustc_abi"
+version = "0.0.20221221"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "adabaadad9aa7576f97af02241cdf5554d62fb3d51a84cb05d77ba28edd3013f"
+dependencies = [
+ "bitflags",
+ "hkalbasi-rustc-ap-rustc_index",
+ "tracing",
+]
+
+[[package]]
+name = "hkalbasi-rustc-ap-rustc_index"
+version = "0.0.20221221"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4d3c48474e09afb0f5efbd6f758e05411699301a113c47d454d28ec7059d00e"
+dependencies = [
+ "arrayvec",
+ "smallvec",
+]
+
+[[package]]
 name = "indexmap"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -435,7 +462,7 @@ checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 
 [[package]]
 name = "linked-hash-map"
@@ -514,11 +541,11 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 dependencies = [
  "drop_bomb",
  "limit",
- "ra-ap-rustc_lexer",
+ "rustc-dependencies",
 ]
 
 [[package]]
@@ -541,6 +568,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pin-project-lite"
+version = "0.2.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8afb450f006bf6385ca15ef45d71d2288452bc3683ce2e2cacc0d18e4be60b58"
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.66"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -552,7 +585,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 dependencies = [
  "cfg-if",
  "countme",
@@ -573,6 +606,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ra-ap-rustc_index"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07b5fa61d34da18e148dc3a81f654488ea07f40938d8aefb17f8b64bb78c6120"
+dependencies = [
+ "arrayvec",
+ "smallvec",
+]
+
+[[package]]
 name = "ra-ap-rustc_lexer"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -580,6 +623,16 @@ checksum = "f2e2f6b48422e4eed5218277ab7cc9733e60dd8f3167f4f36a49a0cafe4dc195"
 dependencies = [
  "unicode-properties",
  "unicode-xid",
+]
+
+[[package]]
+name = "ra-ap-rustc_parse_format"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c3c7369ad01cc79f9e3513c9f6a6326f6b980100e4862a7ac71b9991c88108bb"
+dependencies = [
+ "ra-ap-rustc_index",
+ "ra-ap-rustc_lexer",
 ]
 
 [[package]]
@@ -651,6 +704,17 @@ dependencies = [
  "memoffset 0.8.0",
  "rustc-hash",
  "text-size",
+]
+
+[[package]]
+name = "rustc-dependencies"
+version = "0.0.0"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
+dependencies = [
+ "hkalbasi-rustc-ap-rustc_abi",
+ "hkalbasi-rustc-ap-rustc_index",
+ "ra-ap-rustc_lexer",
+ "ra-ap-rustc_parse_format",
 ]
 
 [[package]]
@@ -741,7 +805,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
@@ -782,7 +846,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 dependencies = [
  "cov-mark",
  "either",
@@ -791,8 +855,8 @@ dependencies = [
  "once_cell",
  "parser",
  "profile",
- "ra-ap-rustc_lexer",
  "rowan",
+ "rustc-dependencies",
  "rustc-hash",
  "smol_str",
  "stdx",
@@ -803,7 +867,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#05666441bafd6010787a4097a6bd44266ad21018"
+source = "git+https://github.com/rust-lang/rust-analyzer#862a3004e958082d0e9cbdf1172c5fe2bab6cf2d"
 dependencies = [
  "itertools",
  "text-size",
@@ -844,6 +908,38 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.26",
+]
+
+[[package]]
+name = "tracing"
+version = "0.1.37"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ce8c33a8d48bd45d624a6e523445fd21ec13d3653cd51f681abf67418f54eb8"
+dependencies = [
+ "cfg-if",
+ "pin-project-lite",
+ "tracing-attributes",
+ "tracing-core",
+]
+
+[[package]]
+name = "tracing-attributes"
+version = "0.1.26"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f4f31f56159e98206da9efd823404b79b6ef3143b4a7ab76e67b1751b25a4ab"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.26",
+]
+
+[[package]]
+name = "tracing-core"
+version = "0.1.31"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0955b8137a1df6f1a2e9a37d8a6656291ff0297c1a97c24e0d8425fe2312f79a"
+dependencies = [
+ "once_cell",
 ]
 
 [[package]]
