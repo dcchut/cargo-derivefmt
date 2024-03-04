@@ -14,5 +14,5 @@ syntax = { git = "https://github.com/rust-lang/rust-analyzer" }
 text-edit = { git = "https://github.com/rust-lang/rust-analyzer" }
 
 [dev-dependencies]
-insta = "1.34"
+insta = "1.36"
 textwrap = "0.16"
