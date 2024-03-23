@@ -37,8 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # disable for now 'dtolnay/serde',
-        target: ['rust-lang/rustfmt']
+        target: ['rust-lang/rustfmt', 'serde-rs/serde']
     steps:
       - uses: actions/checkout@v3
         with:
