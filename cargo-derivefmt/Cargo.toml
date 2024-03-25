@@ -12,6 +12,6 @@ readme = "../README.md"
 anyhow = "1.0"
 clap = { version = "4.5", features = ["derive"] }
 glob = "0.3"
-rayon = "1.8"
+rayon = "1.10"
 cargo-derivefmt-core = { path = "../cargo-derivefmt-core", version = "0.1" }
 cargo-files-core = "0.1"
