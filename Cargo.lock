@@ -105,9 +105,9 @@ dependencies = [
 
 [[package]]
 name = "cargo-files-core"
-version = "0.1.1"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ccf0c7aea2a60d5a7dcf54a51d0fc31e5590b0a2984d4ed9ce51564c188c80ac"
+checksum = "b06bb6f78f8a15e531658e68c288c0291c15026bd9f00ece26e3f2376153771e"
 dependencies = [
  "cargo_metadata",
  "dunce",
