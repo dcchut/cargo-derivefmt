@@ -66,7 +66,7 @@ jobs:
         with:
           repository: serde-rs/serde
           path: 'testcase'
-      - name: FOrmat and build
+      - name: Format and build
         run: |
           cd derivefmt
           cargo run --bin cargo-derivefmt -- --file ../testcase/serde
