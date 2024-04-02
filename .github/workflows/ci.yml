@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: ['rust-lang/rustfmt', 'serde-rs/serde']
+        target: ['rust-lang/rustfmt']
     steps:
       - uses: actions/checkout@v3
         with:
@@ -54,6 +54,25 @@ jobs:
           cd ../testcase
           cargo build
 
+  integration-serde:
+    name: Integration Tests (serde-rs/serde)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: 'derivefmt'
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@v3
+        with:
+          repository: serde-rs/serde
+          path: 'testcase'
+      - name: Format and build
+        run: |
+          cd derivefmt
+          cargo run --bin cargo-derivefmt -- --file ../testcase/serde
+          cd ../testcase/serde
+          cargo build --no-default-features
+  
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
