@@ -55,7 +55,7 @@ jobs:
           cargo build
 
   integration-serde:
-    name: Integration Tests - Serde
+    name: Integration Tests (serde-rs/serde)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
