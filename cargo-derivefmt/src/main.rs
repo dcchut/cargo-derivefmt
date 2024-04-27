@@ -1,7 +1,7 @@
 use std::{collections::HashSet, path::PathBuf};
 
 use anyhow::Result;
-use cargo_files_core::{get_target_files, get_targets};
+use cargo_files_core::{get_target_files, get_targets, Edition};
 use clap::Parser;
 use rayon::prelude::*;
 
@@ -26,11 +26,15 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    let mut files: Vec<PathBuf> = Vec::new();
+    let mut files: Vec<(Option<Edition>, PathBuf)> = Vec::new();
     if args.files.is_empty() {
         let targets = get_targets(args.manifest_path.as_deref())?;
         for target in targets {
-            files.extend(get_target_files(&target)?);
+            files.extend(
+                get_target_files(&target)?
+                    .into_iter()
+                    .map(|f| (Some(target.edition), f)),
+            );
         }
     } else {
         let mut resolved_files = HashSet::with_capacity(args.files.len());
@@ -45,14 +49,24 @@ fn main() -> Result<()> {
                 resolved_files.insert(file);
             }
         }
-        files.extend(resolved_files);
+        // In the absence of any indication from Cargo, we likely should accept an --edition
+        // flag for this use-case, however I'm lazy so I'm not going to do that (yet).
+        files.extend(resolved_files.into_iter().map(|f| (None, f)));
     }
 
     files
         .into_par_iter()
-        .map(|path| {
+        .map(|(edition, path)| {
+            let edition = match edition {
+                Some(Edition::E2021) => cargo_derivefmt_core::Edition::Edition2021,
+                Some(Edition::E2018) => cargo_derivefmt_core::Edition::Edition2018,
+                Some(Edition::E2015) => cargo_derivefmt_core::Edition::Edition2015,
+                Some(Edition::_E2024) => cargo_derivefmt_core::Edition::Edition2024,
+                _ => cargo_derivefmt_core::Edition::CURRENT,
+            };
+
             let mut source = std::fs::read_to_string(&path)?;
-            cargo_derivefmt_core::modify_source(&mut source);
+            cargo_derivefmt_core::modify_source(&mut source, edition);
             std::fs::write(&path, source)?;
             Ok(())
         })

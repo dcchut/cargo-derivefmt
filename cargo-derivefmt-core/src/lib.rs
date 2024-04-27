@@ -5,4 +5,4 @@ mod sort;
 #[cfg(test)]
 mod tests;
 
-pub use modify::modify_source;
+pub use modify::{modify_source, Edition};
