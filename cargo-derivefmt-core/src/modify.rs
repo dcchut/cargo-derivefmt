@@ -1,3 +1,4 @@
+pub use parser::Edition;
 use syntax::{
     algo::diff,
     ast::{Attr, AttrKind},
@@ -9,8 +10,8 @@ use text_edit::TextEdit;
 
 use crate::{build::build_derive_node, parse::ParsedDerive, sort::sorted_groups};
 
-pub fn modify_source(source: &mut String) {
-    let parse = syntax::SourceFile::parse(source);
+pub fn modify_source(source: &mut String, edition: Edition) {
+    let parse = syntax::SourceFile::parse(source, edition);
     let file: syntax::SourceFile = parse.tree();
 
     let mut edits = Vec::new();
