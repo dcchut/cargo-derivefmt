@@ -349,7 +349,7 @@ checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#b427d460ebafcd9ba01607a2c920ca7572559288"
+source = "git+https://github.com/rust-lang/rust-analyzer#ea7fdada6a0940b239ddbde2048a4d7dac1efe1e"
 
 [[package]]
 name = "linked-hash-map"
@@ -384,7 +384,7 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#b427d460ebafcd9ba01607a2c920ca7572559288"
+source = "git+https://github.com/rust-lang/rust-analyzer#ea7fdada6a0940b239ddbde2048a4d7dac1efe1e"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -535,7 +535,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#b427d460ebafcd9ba01607a2c920ca7572559288"
+source = "git+https://github.com/rust-lang/rust-analyzer#ea7fdada6a0940b239ddbde2048a4d7dac1efe1e"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
@@ -566,7 +566,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#b427d460ebafcd9ba01607a2c920ca7572559288"
+source = "git+https://github.com/rust-lang/rust-analyzer#ea7fdada6a0940b239ddbde2048a4d7dac1efe1e"
 dependencies = [
  "cov-mark",
  "either",
@@ -587,7 +587,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#b427d460ebafcd9ba01607a2c920ca7572559288"
+source = "git+https://github.com/rust-lang/rust-analyzer#ea7fdada6a0940b239ddbde2048a4d7dac1efe1e"
 dependencies = [
  "itertools",
  "text-size",
