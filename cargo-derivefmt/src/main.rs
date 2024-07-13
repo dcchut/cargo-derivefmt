@@ -70,7 +70,5 @@ fn main() -> Result<()> {
             std::fs::write(&path, source)?;
             Ok(())
         })
-        .collect::<Result<_>>()?;
-
-    Ok(())
+        .collect::<Result<_>>()
 }
