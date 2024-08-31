@@ -21,6 +21,9 @@ struct Args {
     /// Path to Cargo.toml
     #[arg(long, conflicts_with = "files")]
     manifest_path: Option<PathBuf>,
+    /// Format generated files (files that contain @generated at the beginning) as well, which are skipped by default.
+    #[arg(long, default_value = "false")]
+    no_ignore_generated: bool,
 }
 
 fn main() -> Result<()> {
@@ -54,6 +57,8 @@ fn main() -> Result<()> {
         files.extend(resolved_files.into_iter().map(|f| (None, f)));
     }
 
+    let no_ignore_generated = args.no_ignore_generated;
+
     files
         .into_par_iter()
         .map(|(edition, path)| {
@@ -66,6 +71,15 @@ fn main() -> Result<()> {
             };
 
             let mut source = std::fs::read_to_string(&path)?;
+            // Like rustfmt[1], check the first 5 lines of the file for the `@generated` marker [2].
+            // The marker must be in a comment, but we don't have to check for that (if it is not,
+            // the file will not be syntactically valid anyway.
+            //
+            // [1]: <https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#format_generated_files>
+            // [2]: <https://generated.at/>
+            if !no_ignore_generated && source.lines().take(5).any(|l| l.contains("@generated")) {
+                return Ok(());
+            }
             cargo_derivefmt_core::modify_source(&mut source, edition);
             std::fs::write(&path, source)?;
             Ok(())
