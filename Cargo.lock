@@ -371,7 +371,7 @@ checksum = "97b3888a4aecf77e811145cadf6eef5901f4782c53886191b2f693f24761847c"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#00037c18ed8b57eac49b38495689d8a6b7f53ca3"
+source = "git+https://github.com/rust-lang/rust-analyzer#822644d97d7f64e1bdff25b1d636e366a29facc4"
 
 [[package]]
 name = "linked-hash-map"
@@ -406,7 +406,7 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#00037c18ed8b57eac49b38495689d8a6b7f53ca3"
+source = "git+https://github.com/rust-lang/rust-analyzer#822644d97d7f64e1bdff25b1d636e366a29facc4"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -440,9 +440,9 @@ dependencies = [
 
 [[package]]
 name = "ra-ap-rustc_lexer"
-version = "0.63.0"
+version = "0.68.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3bdf98bb457b47b9ae4aeebf867d0ca440c86925e0b6381658c4a02589748c9d"
+checksum = "5da7f9d533b8d5be6704558da741ff20b982ad4647b1e9e08632853e4fecf9d5"
 dependencies = [
  "unicode-properties",
  "unicode-xid",
@@ -558,7 +558,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#00037c18ed8b57eac49b38495689d8a6b7f53ca3"
+source = "git+https://github.com/rust-lang/rust-analyzer#822644d97d7f64e1bdff25b1d636e366a29facc4"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
@@ -589,7 +589,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#00037c18ed8b57eac49b38495689d8a6b7f53ca3"
+source = "git+https://github.com/rust-lang/rust-analyzer#822644d97d7f64e1bdff25b1d636e366a29facc4"
 dependencies = [
  "cov-mark",
  "either",
@@ -609,7 +609,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#00037c18ed8b57eac49b38495689d8a6b7f53ca3"
+source = "git+https://github.com/rust-lang/rust-analyzer#822644d97d7f64e1bdff25b1d636e366a29facc4"
 dependencies = [
  "itertools",
  "text-size",
