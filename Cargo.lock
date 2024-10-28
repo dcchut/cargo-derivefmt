@@ -371,7 +371,7 @@ checksum = "97b3888a4aecf77e811145cadf6eef5901f4782c53886191b2f693f24761847c"
 [[package]]
 name = "limit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#9323b5385863739d1c113f02e4cf3f2777c09977"
+source = "git+https://github.com/rust-lang/rust-analyzer#3b3a87fe9bd3f2a79942babc1d1e385b6805c384"
 
 [[package]]
 name = "linked-hash-map"
@@ -406,7 +406,7 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#9323b5385863739d1c113f02e4cf3f2777c09977"
+source = "git+https://github.com/rust-lang/rust-analyzer#3b3a87fe9bd3f2a79942babc1d1e385b6805c384"
 dependencies = [
  "drop_bomb",
  "limit",
@@ -440,9 +440,9 @@ dependencies = [
 
 [[package]]
 name = "ra-ap-rustc_lexer"
-version = "0.71.0"
+version = "0.73.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4afa98eb7889c137d5a3f1cd189089e16da04d1e4837d358a67aa3dab10ffbe"
+checksum = "119bc05b5b6bc3e7f5b67ce8b8080e185da94bd83c447f91b6b3f3ecf60cbab1"
 dependencies = [
  "unicode-properties",
  "unicode-xid",
@@ -477,7 +477,7 @@ dependencies = [
  "countme",
  "hashbrown",
  "memoffset",
- "rustc-hash",
+ "rustc-hash 1.1.0",
  "text-size",
 ]
 
@@ -486,6 +486,12 @@ name = "rustc-hash"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08d43f7aa6b08d49f382cde6a7982047c3426db949b1424bc4b7ec9ae12c6ce2"
+
+[[package]]
+name = "rustc-hash"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "583034fd73374156e66797ed8e5b0d5690409c9226b22d87cb7f19821c05d152"
 
 [[package]]
 name = "ryu"
@@ -547,9 +553,9 @@ checksum = "b7c388c1b5e93756d0c740965c41e8822f866621d41acbdf6336a6a168f8840c"
 
 [[package]]
 name = "smol_str"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "66eaf762c5af19db3108300515c8aa7a50efc90ff745f4c62288052ebf9fdd25"
+checksum = "9676b89cd56310a87b93dec47b11af744f34d5fc9f367b829474eec0a891350d"
 dependencies = [
  "borsh",
  "serde",
@@ -558,7 +564,7 @@ dependencies = [
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#9323b5385863739d1c113f02e4cf3f2777c09977"
+source = "git+https://github.com/rust-lang/rust-analyzer#3b3a87fe9bd3f2a79942babc1d1e385b6805c384"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
@@ -589,7 +595,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#9323b5385863739d1c113f02e4cf3f2777c09977"
+source = "git+https://github.com/rust-lang/rust-analyzer#3b3a87fe9bd3f2a79942babc1d1e385b6805c384"
 dependencies = [
  "cov-mark",
  "either",
@@ -598,7 +604,7 @@ dependencies = [
  "parser",
  "ra-ap-rustc_lexer",
  "rowan",
- "rustc-hash",
+ "rustc-hash 2.0.0",
  "smol_str",
  "stdx",
  "text-edit",
@@ -609,7 +615,7 @@ dependencies = [
 [[package]]
 name = "text-edit"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#9323b5385863739d1c113f02e4cf3f2777c09977"
+source = "git+https://github.com/rust-lang/rust-analyzer#3b3a87fe9bd3f2a79942babc1d1e385b6805c384"
 dependencies = [
  "itertools",
  "text-size",
