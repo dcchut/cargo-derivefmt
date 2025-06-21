@@ -11,7 +11,7 @@ fn ident(tokens: &[SyntaxToken]) -> Option<&str> {
                 None
             }
         })
-        .last()
+        .next_back()
 }
 
 pub fn sorted_groups(groups: Vec<Vec<SyntaxToken>>) -> Vec<Vec<SyntaxToken>> {

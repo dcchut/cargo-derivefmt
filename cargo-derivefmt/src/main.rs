@@ -61,7 +61,7 @@ fn main() -> Result<()> {
                 Some(Edition::E2021) => cargo_derivefmt_core::Edition::Edition2021,
                 Some(Edition::E2018) => cargo_derivefmt_core::Edition::Edition2018,
                 Some(Edition::E2015) => cargo_derivefmt_core::Edition::Edition2015,
-                Some(Edition::_E2024) => cargo_derivefmt_core::Edition::Edition2024,
+                Some(Edition::E2024) => cargo_derivefmt_core::Edition::Edition2024,
                 _ => cargo_derivefmt_core::Edition::CURRENT,
             };
 
