@@ -1,12 +1,11 @@
+use ide_db::{syntax_helpers::tree_diff::diff, text_edit::TextEdit};
 pub use parser::Edition;
 use syntax::{
-    algo::diff,
     ast::{Attr, AttrKind},
     ted,
     ted::Element,
     AstNode,
 };
-use text_edit::TextEdit;
 
 use crate::{build::build_derive_node, parse::ParsedDerive, sort::sorted_groups};
 

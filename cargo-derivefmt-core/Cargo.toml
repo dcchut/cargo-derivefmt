@@ -11,8 +11,8 @@ readme = "../README.md"
 [dependencies]
 parser = { git = "https://github.com/rust-lang/rust-analyzer" }
 syntax = { git = "https://github.com/rust-lang/rust-analyzer" }
-text-edit = { git = "https://github.com/rust-lang/rust-analyzer" }
+ide-db = { git = "https://github.com/rust-lang/rust-analyzer" }
 
 [dev-dependencies]
-insta = "1.41"
+insta = "1.42"
 textwrap = "0.16"

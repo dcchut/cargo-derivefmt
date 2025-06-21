@@ -18,7 +18,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test --verbose
 
@@ -26,7 +26,7 @@ jobs:
     name: Fmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt
@@ -39,11 +39,11 @@ jobs:
       matrix:
         target: ['rust-lang/rustfmt']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: 'derivefmt'
       - uses: dtolnay/rust-toolchain@stable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: ${{ matrix.target }}
           path: 'testcase'
@@ -58,11 +58,11 @@ jobs:
     name: Integration Tests (serde-rs/serde)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: 'derivefmt'
       - uses: dtolnay/rust-toolchain@stable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: serde-rs/serde
           path: 'testcase'
@@ -77,7 +77,7 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy
@@ -87,6 +87,7 @@ jobs:
     name: Outdated
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/install@cargo-outdated
+      - uses: actions/checkout@v4
+      - uses: cargo-bins/cargo-binstall@main
+      - run: cargo binstall cargo-outdated
       - run: cargo outdated --workspace --exit-code 1
