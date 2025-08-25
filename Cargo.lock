@@ -79,7 +79,7 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 [[package]]
 name = "base-db"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "cfg",
  "dashmap",
@@ -207,7 +207,7 @@ dependencies = [
 [[package]]
 name = "cfg"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "intern",
  "rustc-hash 2.1.1",
@@ -451,7 +451,7 @@ checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
 [[package]]
 name = "edition"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 
 [[package]]
 name = "either"
@@ -558,7 +558,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "hir"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "base-db",
@@ -584,7 +584,7 @@ dependencies = [
 [[package]]
 name = "hir-def"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "base-db",
@@ -621,7 +621,7 @@ dependencies = [
 [[package]]
 name = "hir-expand"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "base-db",
  "cfg",
@@ -648,7 +648,7 @@ dependencies = [
 [[package]]
 name = "hir-ty"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "base-db",
@@ -779,7 +779,7 @@ dependencies = [
 [[package]]
 name = "ide-db"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "base-db",
@@ -855,7 +855,7 @@ dependencies = [
 [[package]]
 name = "intern"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "dashmap",
  "hashbrown 0.14.5",
@@ -961,7 +961,7 @@ checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
 [[package]]
 name = "mbe"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "cov-mark",
@@ -1102,7 +1102,7 @@ dependencies = [
 [[package]]
 name = "parser"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "drop_bomb",
  "edition",
@@ -1114,7 +1114,7 @@ dependencies = [
 [[package]]
 name = "paths"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "camino",
 ]
@@ -1193,7 +1193,7 @@ dependencies = [
 [[package]]
 name = "profile"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "cfg-if",
  "libc",
@@ -1204,7 +1204,7 @@ dependencies = [
 [[package]]
 name = "query-group-macro"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1615,7 +1615,7 @@ dependencies = [
 [[package]]
 name = "span"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "hashbrown 0.14.5",
  "la-arena",
@@ -1636,7 +1636,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "stdx"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "crossbeam-channel",
  "crossbeam-utils",
@@ -1679,7 +1679,7 @@ dependencies = [
 [[package]]
 name = "syntax"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "either",
  "itertools 0.14.0",
@@ -1696,7 +1696,7 @@ dependencies = [
 [[package]]
 name = "syntax-bridge"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "intern",
  "parser",
@@ -1940,7 +1940,7 @@ checksum = "ef8f7726da4807b58ea5c96fdc122f80702030edc33b35aff9190a51148ccc85"
 [[package]]
 name = "tt"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "arrayvec",
  "intern",
@@ -2023,7 +2023,7 @@ checksum = "ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65"
 [[package]]
 name = "vfs"
 version = "0.0.0"
-source = "git+https://github.com/rust-lang/rust-analyzer#80bc952871fd70a5bb586139bec4546d2d83644a"
+source = "git+https://github.com/rust-lang/rust-analyzer#58a7de6c4d6712e4b520e5406219b9ba081c5ce4"
 dependencies = [
  "crossbeam-channel",
  "fst",
