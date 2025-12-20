@@ -7,12 +7,13 @@ license = "MIT OR Apache-2.0"
 description = "Core derivefmt functionality"
 repository = "https://github.com/dcchut/derivefmt"
 readme = "../README.md"
+rust-version = "1.91"
 
 [dependencies]
-parser = { git = "https://github.com/rust-lang/rust-analyzer" }
-syntax = { git = "https://github.com/rust-lang/rust-analyzer" }
-ide-db = { git = "https://github.com/rust-lang/rust-analyzer" }
+parser = { package = "ra_ap_parser", version = "0.0.310" }
+syntax = { package = "ra_ap_syntax", version = "0.0.310" }
+ide-db = { package = "ra_ap_ide_db", version = "0.0.310" }
 
 [dev-dependencies]
-insta = "1.44"
+insta = "1.45"
 textwrap = "0.16"
