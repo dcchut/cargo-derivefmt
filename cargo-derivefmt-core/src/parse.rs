@@ -20,11 +20,11 @@ impl ParsedDerive {
 
         let mut acc = Vec::new();
         for token in tokens.iter().map(Some).chain([None]) {
-            if let Some(token) = token {
-                if token.kind() != COMMA {
-                    acc.push(token.clone());
-                    continue;
-                }
+            if let Some(token) = token
+                && token.kind() != COMMA
+            {
+                acc.push(token.clone());
+                continue;
             }
 
             if acc.is_empty() {

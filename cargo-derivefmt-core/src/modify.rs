@@ -1,10 +1,10 @@
 use ide_db::{syntax_helpers::tree_diff::diff, text_edit::TextEdit};
 pub use parser::Edition;
 use syntax::{
+    AstNode,
     ast::{Attr, AttrKind},
     ted,
     ted::Element,
-    AstNode,
 };
 
 use crate::{build::build_derive_node, parse::ParsedDerive, sort::sorted_groups};
@@ -32,11 +32,10 @@ pub fn modify_source(source: &mut String, edition: Edition) {
 
         tokens.clear();
         for node_or_token in tree.token_trees_and_tokens() {
-            if let Some(token) = node_or_token.into_token() {
-                tokens.push(token);
-            } else {
+            let Some(token) = node_or_token.into_token() else {
                 continue 'item;
-            }
+            };
+            tokens.push(token);
         }
         let derive = ParsedDerive::parse(&tokens[1..(tokens.len() - 1)]);
         let sorted_groups = sorted_groups(derive.groups);

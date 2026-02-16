@@ -2,7 +2,7 @@
 name = "cargo-derivefmt-core"
 version = "0.1.0"
 authors = ["Robert Usher <266585+dcchut@users.noreply.github.com>"]
-edition = "2021"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Core derivefmt functionality"
 repository = "https://github.com/dcchut/derivefmt"
@@ -10,9 +10,9 @@ readme = "../README.md"
 rust-version = "1.91"
 
 [dependencies]
-parser = { package = "ra_ap_parser", version = "0.0.310" }
-syntax = { package = "ra_ap_syntax", version = "0.0.310" }
-ide-db = { package = "ra_ap_ide_db", version = "0.0.310" }
+parser = { package = "ra_ap_parser", version = "0.0.320" }
+syntax = { package = "ra_ap_syntax", version = "0.0.320" }
+ide-db = { package = "ra_ap_ide_db", version = "0.0.320" }
 
 [dev-dependencies]
 insta = "1.46"

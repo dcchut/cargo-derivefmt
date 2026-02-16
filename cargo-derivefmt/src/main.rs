@@ -1,7 +1,7 @@
 use std::{collections::HashSet, path::PathBuf};
 
 use anyhow::Result;
-use cargo_files_core::{get_target_files, get_targets, Edition};
+use cargo_files_core::{Edition, get_target_files, get_targets};
 use clap::Parser;
 use rayon::prelude::*;
 
