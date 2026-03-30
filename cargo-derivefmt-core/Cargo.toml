@@ -15,5 +15,5 @@ syntax = { package = "ra_ap_syntax", version = "0.0.320" }
 ide-db = { package = "ra_ap_ide_db", version = "0.0.320" }
 
 [dev-dependencies]
-insta = "1.46"
+insta = "1.47"
 textwrap = "0.16"
