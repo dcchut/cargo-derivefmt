@@ -27,6 +27,30 @@ fn test_derive_double_comma() {
 }
 
 #[test]
+fn test_derive_empty() {
+    test!(
+        r#"
+        #[derive()]
+        struct Empty;
+
+        #[derive( )]
+        struct Whitespace;
+
+        #[derive(/* block comment */)]
+        struct BlockComment;
+
+        #[derive(
+            // line comment
+        )]
+        struct LineComment;
+
+        #[derive(Debug, Clone)]
+        struct NotEmpty;
+    "#
+    );
+}
+
+#[test]
 fn test_derive_ordering() {
     test!(
         r#"
