@@ -1,0 +1,21 @@
+---
+source: cargo-derivefmt-core/src/tests/mod.rs
+expression: source
+---
+
+#[derive()]
+struct Empty;
+
+#[derive( )]
+struct Whitespace;
+
+#[derive(/* block comment */)]
+struct BlockComment;
+
+#[derive(
+    // line comment
+)]
+struct LineComment;
+
+#[derive(Clone, Debug)]
+struct NotEmpty;
